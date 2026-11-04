@@ -36,4 +36,3 @@ data/sample/*
 .DS_Store
 .claude/
 .ipynb_checkpoints/
-figures/overview.html
