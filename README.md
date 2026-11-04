@@ -2,16 +2,13 @@
 
 Angikar Ghosal, Kaitlyn Wang<br>
 Stanford University<br>
-STATS 305C
 
-Pretraining data filters disagree on which web documents are "high quality", and their scores
-are hard to interpret. Using 2.26M documents from
+Pretraining data filters vary in methods and often disagree on which web documents are "high quality", and what is empirically successful is often hard to interpret. Using web documents from
 [WebOrganizer/Corpus-200B](https://huggingface.co/datasets/WebOrganizer/Corpus-200B), we first
-model ten existing filters with a two-factor latent model fit by EM. We then train 593 small LMs
-on random document subsets to measure each document's effect on validation loss, and predict
-that effect from readable features with an Explainable Boosting Machine (EBM). The EBM reaches
+model ten existing empirically successful filters with a two-factor latent model fit by EM. In the second stage, we estimate ground truth targets through model swarms (we estimate each document's effect on validation loss by training 593 small LMs
+on random document subsets), and predict that effect from readable features with an Explainable Boosting Machine (EBM). The EBM reaches
 a test R² of 0.656, and applied within topics it selects data with lower validation loss than
-random selection.
+random selection. We investigate a host of features that are hypothesized to matter across literature and find some interesting interpretable results!
 
 ```mermaid
 flowchart LR
@@ -63,7 +60,7 @@ ICLR 2025), a textbook-quality fastText classifier, the OpenAI RoBERTa detector,
 (see [NOTICE.md](NOTICE.md)). Models are fit with
 [InterpretML](https://github.com/interpretml/interpret), and the influence experiments use
 [kronfluence](https://github.com/pomonam/kronfluence). We thank Scott Linderman and the
-STATS305C class for guidance and feedback on this project.
+STATS305C class for guidance and feedback on this project!
 
 ## Citation
 
