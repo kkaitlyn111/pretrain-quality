@@ -5,10 +5,10 @@ Adapted from `kronfluence/examples/openwebtext/task.py`. Correctness notes:
 - Summed token cross-entropy (`reduction="sum"`), required for the
   Fisher = Gauss-Newton equivalence that EK-FAC relies on.
 - `sample=True` draws targets from the model's own predictive distribution
-  (true Fisher), NOT the training labels (which would give the worse empirical
+  (true Fisher), not the training labels (which would give the worse empirical
   Fisher). This is the single most common source of silently-wrong EK-FAC
   factors, so it is implemented explicitly here.
-- Only the MLP / feed-forward linear layers are tracked (paper default;
+- Only the MLP / feed-forward linear layers are tracked (the EK-FAC default;
   `model.layers.{i}.mlp.{gate_proj,up_proj,down_proj}` for HF Llama).
 """
 from __future__ import annotations

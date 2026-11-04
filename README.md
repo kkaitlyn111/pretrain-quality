@@ -4,16 +4,14 @@ Angikar Ghosal, Kaitlyn Wang<br>
 Stanford University<br>
 STATS 305C
 
-We study which readable properties of a web document make it useful pretraining data, using
-2.26M documents from [WebOrganizer/Corpus-200B](https://huggingface.co/datasets/WebOrganizer/Corpus-200B).
-
-The work has two stages:
-1. We take ten existing quality filters as the target and fit a two-factor latent model by EM.
-   It recovers a benchmark axis and a generative-quality axis.
-2. We train a swarm of 593 small LMs on random document subsets and estimate each document's
-   contribution to validation loss by difference in means. An interpretable EBM then predicts
-   that target from readable features, and we test it as a data-selection rule on held-out
-   shards.
+Pretraining data filters disagree on which web documents are "high quality", and their scores
+are hard to interpret. Using 2.26M documents from
+[WebOrganizer/Corpus-200B](https://huggingface.co/datasets/WebOrganizer/Corpus-200B), we first
+model ten existing filters with a two-factor latent model fit by EM. We then train 593 small LMs
+on random document subsets to measure each document's effect on validation loss, and predict
+that effect from readable features with an Explainable Boosting Machine (EBM). The EBM reaches
+a test R² of 0.656, and applied within topics it selects data with lower validation loss than
+random selection.
 
 ```mermaid
 flowchart LR
@@ -29,54 +27,33 @@ flowchart LR
 
 ## Results
 
-Predicting the swarm target on about 412K held-out documents:
-
-| model | test R² |
+| Predicting y (held-out documents) | Test R² ↑ |
 |---|---:|
-| topic only | 0.076 |
+| Topic only | 0.076 |
 | Lasso | 0.408 |
-| EBM, human-readable features | 0.656 |
-| EBM, all features | 0.668 |
+| EBM, no perplexity-correlation features | 0.656 |
+| EBM, all features | **0.668** |
 
-- **Stage 1:** a top-20% selection by the two-factor posterior reaches quality 0.680, against
-  0.405 for global DCLM.
-- **Held-out selection:** 60M LMs train on 150M-token selections from 30 fresh shards.
-  Applying the EBM within topics gives the lowest CommonCrawl validation loss (3.873, vs.
-  3.884 for random). DCLM is best on ARC-Easy and LAMBADA.
+| Selection policy (60M LMs, 150M tokens) | CC val loss ↓ | ARC-Easy ↑ |
+|---|---:|---:|
+| EBM within topics | **3.873** | 0.316 |
+| Random | 3.884 | 0.349 |
+| FineWeb-Edu | 3.967 | 0.365 |
+| DCLM | 4.006 | **0.379** |
 
-Full tables are in the paper.
+The two-factor model's top-20% selection reaches a held-out quality of 0.680, against 0.405
+for DCLM.
+
+![EBM shape functions](figures/ebm_shapes.png)
 
 ## Quickstart
 
-The quickstart runs on CPU in about a minute, using a bundled sample of 10K held-out
-documents with their swarm targets.
-
 ```bash
-git clone https://github.com/kkaitlyn111/pretrain-quality.git
-cd pretrain-quality
-make quickstart
+git clone https://github.com/kkaitlyn111/pretrain-quality.git && cd pretrain-quality
+make quickstart   # feature extraction and EBM fit on a bundled 10K-document sample (CPU, ~1 min)
 ```
 
-```text
-[extract] check vs. full-pipeline values: 100.00% of doc x feature cells match
-[fit] bundled full-data EBM-no-PC (trained on 1.65M docs), R^2 on these held-out docs: 0.662
-      Lasso       R^2 = 0.418
-      EBM-no-PC   R^2 = 0.645
-```
-
-The full cluster pipeline is described in [pipeline/README.md](pipeline/README.md).
-
-## Repository layout
-
-```text
-├── report/paper.pdf        the paper
-├── src/pretrain_quality/   feature code and the `pq extract` / `pq fit` quickstart
-├── pipeline/               full pipeline: features, EDA, factor model, swarm, EBM, validation
-├── data/sample/            10K-document sample with targets
-├── models/                 full-data EBM
-├── results/  figures/      result tables and paper figures
-└── tests/
-```
+The full pipeline is described in [pipeline/README.md](pipeline/README.md).
 
 ## Acknowledgements
 
@@ -102,7 +79,4 @@ The paper is in [report/paper.pdf](report/paper.pdf).
 }
 ```
 
-## License
-
-The code is released under the MIT license ([LICENSE](LICENSE)). The bundled sample text and
-third-party model outputs keep their original terms ([NOTICE.md](NOTICE.md)).
+The code is released under the MIT license ([LICENSE](LICENSE)).

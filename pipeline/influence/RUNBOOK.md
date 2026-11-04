@@ -4,7 +4,7 @@ This pipeline is an alternative to the swarm's difference-in-means target. It sc
 training document with a single-model EK-FAC influence function
 ([kronfluence](https://github.com/pomonam/kronfluence)) and refits the EBM on that score.
 
-The paper reports this as a negative result (Section 6). A 100M-parameter model trained on
+This approach gave a negative result. A 100M-parameter model trained on
 the full 1.8B-token pool gives one influence score per document, but these scores predict the
 swarm target *y* with held-out R² of only about 0.2. At this model size, influence functions
 are not a substitute for randomized swarms.

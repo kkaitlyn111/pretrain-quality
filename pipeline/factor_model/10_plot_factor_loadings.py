@@ -1,4 +1,4 @@
-"""Bar chart of the two-factor MAP loadings (paper Figure 3, left).
+"""Bar chart of the two-factor MAP loadings.
 """
 from __future__ import annotations
 

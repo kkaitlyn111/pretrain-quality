@@ -1,5 +1,4 @@
-"""Quality-diversity frontier of the two-factor posterior policy as the within-topic floor varies
-(paper Figure 3, right).
+"""Quality-diversity frontier of the two-factor posterior policy as the within-topic floor varies.
 """
 from __future__ import annotations
 

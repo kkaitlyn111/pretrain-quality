@@ -1,4 +1,4 @@
-"""Two-factor Gaussian measurement model of the filter scores, fit by EM (paper Sections 3.1 and 4.1).
+"""Two-factor Gaussian measurement model of the filter scores,, fit by EM.
 
     h_i | z_i ~ N(Gamma^T z_i, I),    s_i | h_i ~ N(alpha + Lambda h_i, diag(psi))
 """

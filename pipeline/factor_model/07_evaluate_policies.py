@@ -1,5 +1,5 @@
 """Top-20% selection policies on held-out documents: random, global DCLM, hierarchical, one- and
-two-factor posterior, with and without a within-topic floor (paper Table 1).
+two-factor posterior, with and without a within-topic floor.
 """
 from __future__ import annotations
 

@@ -16,10 +16,10 @@ Submit the `pipeline/slurm/*.sh` scripts from the repository root; they source
 | directory | contents |
 |---|---|
 | `features/` | per-shard feature extraction over Corpus-200B |
-| `eda/` | filter-score correlations (paper Section 2.2) |
-| `factor_model/` | two-factor latent measurement model and selection policies (Sections 3.1, 4.1, 5.1) |
-| `scripts/` | swarm target, EBM, downstream validation and figures (Sections 3.2–5.3) |
-| `influence/` | EK-FAC influence target, reported as a negative result in Section 6 |
+| `eda/` | filter-score correlations |
+| `factor_model/` | two-factor latent measurement model and selection policies |
+| `scripts/` | swarm target, EBM, downstream validation and figures |
+| `influence/` | EK-FAC influence target (an alternative to the swarm target; negative result) |
 | `slurm/` | SLURM wrappers |
 
 ## 1. Corpus and shard sample
@@ -60,7 +60,7 @@ python pipeline/scripts/03_build_master.py          # -> $PQ_WORK_DIR/master.par
 ## 3. Exploratory analysis
 
 ```bash
-python pipeline/eda/filter_correlations.py          # global vs. within-topic Spearman, Figure 1
+python pipeline/eda/filter_correlations.py          # global vs. within-topic Spearman
 ```
 
 ## 4. Two-factor latent measurement model
@@ -76,10 +76,10 @@ python $D/03_fit_baselines.py                       # covariate-only baselines
 python $D/04_fit_hierarchical_gibbs.py              # hierarchical regression (reference frontier)
 python $D/05_fit_one_factor_em.py --iterations 200  # one-factor ablation
 python $D/06_fit_two_factor_em.py --iterations 300  # two-factor model (EM)
-python $D/07_evaluate_policies.py                   # Table 1
-python $D/08_quality_diversity_frontier.py          # Figure 3, right
+python $D/07_evaluate_policies.py                   # selection policies
+python $D/08_quality_diversity_frontier.py          # quality-diversity frontier
 python $D/09_policy_robustness.py                   # bootstrap confidence intervals
-python $D/10_plot_factor_loadings.py                # Figure 3, left
+python $D/10_plot_factor_loadings.py                # factor loadings
 ```
 
 Artifacts are written to `$PQ_WORK_DIR/factor_model/`.

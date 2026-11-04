@@ -1,4 +1,4 @@
-"""Exploratory analysis of the ten quality filters (paper Section 2.2, Figure 1).
+"""Exploratory analysis of the ten quality filters.
 
 Computes pairwise Spearman correlations between the filter scores over all documents and
 within topics (correlation of within-topic percentile ranks), and plots raw scores against

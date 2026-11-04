@@ -1,4 +1,4 @@
-"""Paths and constants for the latent-factor model of filter scores (paper Sections 3.1, 4.1, 5.1).
+"""Paths and constants for the latent-factor model of filter scores.
 
 Inputs come from the feature stage ($PQ_FEATURES_DIR: annotations.parquet, sampled_shards.json,
 features/, scores_pc/, scores_qurater/); all artifacts go to $PQ_WORK_DIR/factor_model.

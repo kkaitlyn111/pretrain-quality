@@ -1,4 +1,4 @@
-"""Paper figures for the swarm target and the EBM.
+"""Figures for the swarm target and the EBM.
 
 Writes to figures/:
   swarm_val_loss.png    validation loss across the 593 diagnostic runs
@@ -30,6 +30,7 @@ HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 from config import DATA_DIR, MASKS_DIR, MASTER_PARQUET, MODELS_DIR, RESULTS_DIR  # noqa: E402
 from pretrain_quality import paths  # noqa: E402
+from pretrain_quality.palette import DARK_BLUE, GRAY, LIGHT_BLUE, PINK, PURPLE  # noqa: E402
 
 OUT = paths.REPO_ROOT / "figures"
 
@@ -52,6 +53,7 @@ rcParams.update({
     "grid.color": "#bbbbbb",
     "savefig.bbox": "tight",
     "savefig.pad_inches": 0.02,
+    "savefig.facecolor": "white",
 })
 
 PRETTY_FEATURE = {
@@ -72,39 +74,17 @@ PRETTY_FEATURE = {
     "mean_line_length": "Mean line length",
 }
 
-FAMILY_COLOR = {
-    "QuRater": "#1d3156",
-    "Textbook": "#fed6ce",
-    "Entity": "#a37ab4",
-    "Structural": "#d486b8",
-    "Length": "#abbcd6",
-}
 
 RUN_TYPE = {  # selection family -> (colour, legend label)
-    "single_threshold": ("#f4a8a8", "single-feature threshold"),
-    "multi_intersection": ("#f6c79a", "multi-feature intersection"),
-    "linear_top": ("#f3e29a", "random linear combination"),
-    "linear_top_simple": ("#c7e6b2", "linear combination (simple)"),
-    "targeted_top": ("#a8d8c9", "targeted filter baselines"),
-    "within_topic_top": ("#a8c8ec", "within-topic top-k"),
-    "dclm_top_then_restrict": ("#c9b3e3", "DCLM-restricted"),
-    "random": ("#f1b6da", "random subset"),
+    "single_threshold": (DARK_BLUE, "single-feature threshold"),
+    "multi_intersection": (PURPLE, "multi-feature intersection"),
+    "linear_top": (PINK, "random linear combination"),
+    "linear_top_simple": (LIGHT_BLUE, "linear combination (simple)"),
+    "targeted_top": ("#4f6aa3", "targeted filter baselines"),
+    "within_topic_top": ("#b3a3e0", "within-topic top-k"),
+    "dclm_top_then_restrict": ("#f3bfd7", "DCLM-restricted"),
+    "random": (GRAY, "random subset"),
 }
-
-
-def feature_family(name: str) -> str:
-    if name.startswith("qr_"):
-        return "QuRater"
-    if name in ("textbook_quality", "ai_generated"):
-        return "Textbook"
-    if name in ("entity_density", "entity_diversity", "entity_per_sentence",
-                "proper_noun_density", "numeric_density"):
-        return "Entity"
-    if name.startswith(("discourse_", "explanation_", "question_", "pronoun_",
-                        "first_person_", "hedge_", "hapax_", "header_", "code_",
-                        "list_", "avg_paragraph", "flesch")):
-        return "Structural"
-    return "Length"
 
 
 def load_runs() -> pd.DataFrame:
@@ -178,20 +158,20 @@ def fig_target_overview(df: pd.DataFrame, y: np.ndarray, runs: pd.DataFrame) -> 
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 9))
     ax = axes[0, 0]
-    ax.hist(y, bins=80, color="#4c78a8", edgecolor="white", linewidth=0.3)
+    ax.hist(y, bins=80, color=DARK_BLUE, edgecolor="white", linewidth=0.3)
     ax.axvline(0, color="k", ls="--", lw=1)
     ax.set_xlabel("Document contribution $y$")
     ax.set_ylabel("Documents")
     ax.set_title(f"Distribution of $y$ (n = {len(y):,})")
 
     ax = axes[0, 1]
-    ax.hist(coverage, bins=50, color="#f58518", edgecolor="white", linewidth=0.3)
+    ax.hist(coverage, bins=50, color=PURPLE, edgecolor="white", linewidth=0.3)
     ax.set_xlabel("Swarm runs that include the document")
     ax.set_ylabel("Documents")
     ax.set_title(f"Run coverage (mean {coverage.mean():.1f}, median {np.median(coverage):.0f})")
 
     ax = axes[0, 2]
-    ax.hist(runs["val_loss"], bins=40, color="#54a24b", edgecolor="white", linewidth=0.3)
+    ax.hist(runs["val_loss"], bins=40, color=PINK, edgecolor="white", linewidth=0.3)
     ax.set_xlabel("Validation loss")
     ax.set_ylabel("Runs")
     ax.set_title(f"Validation loss per run (n = {len(runs)})")
@@ -213,7 +193,7 @@ def fig_target_overview(df: pd.DataFrame, y: np.ndarray, runs: pd.DataFrame) -> 
     fwe = df["fwedu_rounded"].to_numpy()[ok].astype(int)
     ax.boxplot([y[ok][fwe == k] for k in range(6)], positions=range(6), widths=0.6,
                showfliers=False, patch_artist=True,
-               boxprops=dict(facecolor="#e45756", alpha=0.5))
+               boxprops=dict(facecolor=PINK, alpha=0.5))
     ax.axhline(0, color="k", ls="--", lw=1)
     ax.set_xlabel("FineWeb-Edu score (rounded, 0-5)")
     ax.set_ylabel("$y$")
@@ -232,16 +212,16 @@ def fig_calibration(df: pd.DataFrame, y: np.ndarray, in_pool: np.ndarray) -> Non
     r2 = 1 - ((y_te - p_te) ** 2).sum() / ((y_te - y_te.mean()) ** 2).sum()
 
     fig, ax = plt.subplots(figsize=(5.6, 4.4))
-    hb = ax.hexbin(p_te, y_te, gridsize=70, cmap="BuPu", mincnt=3,
+    hb = ax.hexbin(p_te, y_te, gridsize=70, cmap="Purples", mincnt=3,
                    extent=(-0.13, 0.11, -0.18, 0.14))
-    ax.plot((-0.18, 0.14), (-0.18, 0.14), color="#d486b8", lw=1.4, ls="--", label="y = ŷ")
+    ax.plot((-0.18, 0.14), (-0.18, 0.14), color=PINK, lw=1.4, ls="--", label="y = ŷ")
     bins = np.linspace(-0.10, 0.09, 22)
     which = np.digitize(p_te, bins) - 1
     mids = 0.5 * (bins[:-1] + bins[1:])
     means = np.array([y_te[which == i].mean() if (which == i).sum() > 50 else np.nan
                       for i in range(len(mids))])
-    ax.plot(mids, means, color="#1d3156", lw=2.4, marker="o", ms=4.5,
-            markerfacecolor="white", markeredgecolor="#1d3156", label="binned mean of y")
+    ax.plot(mids, means, color=DARK_BLUE, lw=2.4, marker="o", ms=4.5,
+            markerfacecolor="white", markeredgecolor=DARK_BLUE, label="binned mean of y")
     ax.set_xlim(-0.13, 0.11)
     ax.set_ylim(-0.18, 0.14)
     ax.set_xlabel(r"EBM (no perplexity-correlation) prediction $\hat{y}$")
@@ -272,20 +252,17 @@ def fig_ebm_shapes() -> None:
         lo, hi = np.quantile(edges, [0.01, 0.99])  # trim long tails for legibility
         keep = (mids >= lo) & (mids <= hi)
         x, s = mids[keep], scores[keep]
-        c = FAMILY_COLOR[feature_family(feat)]
         if sd.get("upper_bounds") is not None:
             ax.fill_between(x, np.asarray(sd["lower_bounds"], float)[keep],
                             np.asarray(sd["upper_bounds"], float)[keep],
-                            color=c, alpha=0.18, linewidth=0)
-        ax.plot(x, s, color=c, lw=2.0)
-        ax.axhline(0, color="#444", ls=":", lw=0.7, zorder=0)
-        ax.scatter([x[np.argmax(s)]], [s.max()], s=22, color=c, zorder=5,
-                   edgecolor="white", linewidths=0.6)
-        ax.scatter([x[np.argmin(s)]], [s.min()], s=22, color="#cc3333", zorder=5,
-                   edgecolor="white", linewidths=0.6)
-        label = PRETTY_FEATURE.get(feat, feat)
-        ax.set_xlabel(label, fontsize=10)
-        ax.set_title(label.split(" (")[0], fontsize=11)
+                            color=LIGHT_BLUE, alpha=0.45, linewidth=0)
+        ax.plot(x, s, color=DARK_BLUE, lw=2.0)
+        ax.axhline(0, color=GRAY, ls=":", lw=0.8, zorder=0)
+        ax.scatter([x[np.argmax(s)]], [s.max()], s=28, color=PINK, zorder=5,
+                   edgecolor="white", linewidths=0.8)
+        ax.scatter([x[np.argmin(s)]], [s.min()], s=28, color=PURPLE, zorder=5,
+                   edgecolor="white", linewidths=0.8)
+        ax.set_title(PRETTY_FEATURE.get(feat, feat), fontsize=11)
     for ax in axes[:, 0]:
         ax.set_ylabel(r"Contribution to $y$ ($\Delta y$)")
     fig.suptitle("Shape functions of the top six EBM features", fontsize=13,
