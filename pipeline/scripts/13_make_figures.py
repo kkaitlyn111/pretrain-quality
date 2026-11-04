@@ -1,13 +1,18 @@
-"""Figures for the swarm target and the EBM.
+"""Figures for the README and the paper, all drawn with the shared palette.
 
 Writes to figures/:
-  swarm_val_loss.png    validation loss across the 593 diagnostic runs
-  target_overview.png   distribution of y, run coverage, and y against three filters
-  calibration.png       EBM-no-PC calibration on the held-out test split
-  ebm_shapes.png        EBM-no-PC shape functions for the six most important features
+  filter_correlations.png   Spearman correlations between the ten filters
+  factor_loadings.png       two-factor loadings
+  quality_diversity.png     quality vs. topic entropy for the top-20% two-factor selection
+  r2.png                    test R² of four predictors of y
+  calibration.png           EBM prediction vs. measured y on held-out documents
+  ebm_shapes.png            EBM shape functions for the six most important features
+  feature_importance.png    top-12 EBM features by importance
+  selection.png             CommonCrawl val loss of 60M LMs by selection policy
+  swarm_val_loss.png, target_overview.png   (diagnostics, not in the README)
 
-Requires the full pipeline outputs in $PQ_WORK_DIR (master.parquet, the target,
-the diagnostic runs and masks, and the trained EBM).
+Figures from results/ need only the repository; the others need the pipeline outputs in
+$PQ_WORK_DIR (and $PQ_WORK_DIR/factor_model for the two factor-model figures).
 """
 from __future__ import annotations
 
@@ -23,6 +28,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import rcParams
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.lines import Line2D
 from scipy.stats import pearsonr, spearmanr
 from sklearn.model_selection import train_test_split
 
@@ -33,6 +40,11 @@ from pretrain_quality import paths  # noqa: E402
 from pretrain_quality.palette import DARK_BLUE, GRAY, LIGHT_BLUE, PINK, PURPLE  # noqa: E402
 
 OUT = paths.REPO_ROOT / "figures"
+RESULTS = paths.REPO_ROOT / "results"
+BLUES = LinearSegmentedColormap.from_list("pq_blues", ["#ffffff", LIGHT_BLUE, DARK_BLUE])
+
+# Test R² as reported in report/paper.pdf.
+R2 = [("Topic only", 0.076), ("Lasso", 0.408), ("EBM, no PC", 0.656), ("EBM, all", 0.668)]
 
 rcParams.update({
     "font.family": "serif",
@@ -72,6 +84,7 @@ PRETTY_FEATURE = {
     "flesch_kincaid_grade": "Flesch-Kincaid grade level",
     "flesch_reading_ease": "Flesch reading ease",
     "mean_line_length": "Mean line length",
+    "explanation_density": "Explanation marker density",
 }
 
 
@@ -272,28 +285,208 @@ def fig_ebm_shapes() -> None:
     plt.close()
 
 
+def _save(fig, name: str) -> None:
+    fig.savefig(OUT / name, dpi=200)
+    plt.close(fig)
+
+
+def fig_filter_correlations() -> None:
+    d = json.loads((RESULTS / "filter_correlations.json").read_text())
+    rho = pd.DataFrame(d["spearman_global"])
+    labels = {"dclm_score": "DCLM", "fwedu_rounded": "FineWeb-Edu", "pc_arc_easy": "PC-ARC",
+              "pc_piqa": "PC-PIQA", "pc_sciq": "PC-SciQ", "pc_lambada": "PC-LAMBADA",
+              "qr_writing_style": "QR-Writing", "qr_required_expertise": "QR-Expertise",
+              "qr_facts_and_trivia": "QR-Facts", "qr_educational_value": "QR-EduVal"}
+    cols = [c for c in labels if c in rho.columns]
+    m = rho.loc[cols, cols].to_numpy()
+    fig, ax = plt.subplots(figsize=(6.4, 5.4))
+    im = ax.imshow(m, cmap=BLUES, vmin=-0.2, vmax=1)
+    ax.set_xticks(range(len(cols)), [labels[c] for c in cols], rotation=45, ha="right")
+    ax.set_yticks(range(len(cols)), [labels[c] for c in cols])
+    for i in range(len(cols)):
+        for j in range(len(cols)):
+            ax.text(j, i, f"{m[i, j]:.2f}", ha="center", va="center", fontsize=7.5,
+                    color="white" if m[i, j] > 0.6 else "#1f2937")
+    ax.grid(False)
+    ax.set_title("Spearman correlation between filters")
+    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    plt.tight_layout()
+    _save(fig, "filter_correlations.png")
+
+
+def fig_factor_loadings(factor_dir: Path) -> None:
+    data = np.load(factor_dir / "two_factor_em_outputs.npz", allow_pickle=True)
+    loading = data["loading"].astype(float)
+    names = {"dclm_score": "DCLM", "fwedu_rounded": "FineWeb-Edu", "pc_arc_easy": "ARC-Easy",
+             "pc_piqa": "PIQA", "pc_sciq": "SciQ", "pc_lambada": "LAMBADA"}
+    labels = [names.get(str(n), str(n)) for n in data["score_names"]]
+    x = np.arange(len(labels))
+    fig, ax = plt.subplots(figsize=(5.6, 3.6))
+    ax.bar(x - 0.19, loading[:, 0], 0.38, color=DARK_BLUE, label="Factor 1 (benchmark)")
+    ax.bar(x + 0.19, loading[:, 1], 0.38, color=PINK, label="Factor 2 (generative quality)")
+    ax.axhline(0, color=GRAY, lw=0.8)
+    ax.set_xticks(x, labels, rotation=25, ha="right")
+    ax.set_ylabel("Loading")
+    ax.set_title("Two-factor loadings")
+    ax.set_ylim(top=1.12)
+    ax.legend(frameon=False, loc="upper center", ncol=2, fontsize=9)
+    ax.grid(axis="x", visible=False)
+    plt.tight_layout()
+    _save(fig, "factor_loadings.png")
+
+
+def fig_quality_diversity(factor_dir: Path) -> None:
+    d = json.loads((factor_dir / "quality_diversity_frontier.json").read_text())
+    pts = d["two_factor_frontier"]
+    x = np.array([p["topic_entropy"] for p in pts])
+    y = np.array([p["mean_quality"] for p in pts])
+    floor = np.array([p["topic_floor_fraction"] for p in pts])
+    fig, ax = plt.subplots(figsize=(5.6, 3.6))
+    ax.plot(x, y, color=DARK_BLUE, lw=1.4, zorder=2)
+    sc = ax.scatter(x, y, c=floor, cmap=BLUES, vmin=-0.05, vmax=floor.max(), s=46,
+                    edgecolor=DARK_BLUE, linewidths=0.6, zorder=3)
+    ref = d["references"]
+    ax.scatter(ref["global_dclm"]["topic_entropy"], ref["global_dclm"]["mean_quality"],
+               marker="s", s=60, color=PINK, zorder=3)
+    ax.scatter(ref["random"]["topic_entropy"], ref["random"]["mean_quality"],
+               marker="o", s=60, color=GRAY, zorder=3)
+    handles = [Line2D([], [], color=DARK_BLUE, marker="o", markerfacecolor=LIGHT_BLUE,
+                      label="Two-factor, top 20%"),
+               Line2D([], [], color=PINK, marker="s", ls="", label="Global DCLM"),
+               Line2D([], [], color=GRAY, marker="o", ls="", label="Random")]
+    ax.legend(handles=handles, frameon=False, loc="center left")
+    ax.set_xlabel("Topic entropy")
+    ax.set_ylabel("Mean held-out quality")
+    ax.set_title("Quality vs. topic diversity")
+    cbar = fig.colorbar(sc, ax=ax, fraction=0.05, pad=0.03)
+    cbar.set_label("Within-topic floor")
+    cbar.ax.set_ylim(0, floor.max())
+    plt.tight_layout()
+    _save(fig, "quality_diversity.png")
+
+
+def fig_r2() -> None:
+    names, vals = zip(*R2)
+    fig, ax = plt.subplots(figsize=(5.6, 3.6))
+    bars = ax.bar(names, vals, color=[LIGHT_BLUE, PINK, PURPLE, DARK_BLUE], width=0.6)
+    for b, v in zip(bars, vals):
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.015, f"{v:.3f}", ha="center",
+                va="bottom", fontsize=10)
+    ax.set_ylim(0, 0.78)
+    ax.set_ylabel("Test R²")
+    ax.set_title("Predicting y on held-out documents")
+    ax.grid(axis="x", visible=False)
+    plt.tight_layout()
+    _save(fig, "r2.png")
+
+
+def _shape_kind(scores: np.ndarray, edges: np.ndarray) -> str:
+    """Classify a shape function as up, down or peak (interior maximum)."""
+    mids = 0.5 * (edges[:-1] + edges[1:])
+    lo, hi = np.quantile(edges, [0.02, 0.98])
+    s = scores[(mids >= lo) & (mids <= hi)]
+    n = len(s)
+    if n < 5:
+        return "up"
+    k = max(1, n // 10)
+    left, right = s[:k].mean(), s[-k:].mean()
+    span = max(s.max() - s.min(), 1e-9)
+    if int(0.2 * n) <= int(np.argmax(s)) < n - int(0.2 * n) and s.max() - max(left, right) > 0.35 * span:
+        return "peak"
+    return "up" if right > left else "down"
+
+
+def fig_feature_importance(top: int = 12) -> None:
+    ebm = joblib.load(MODELS_DIR / "ebm_interp.joblib")
+    glob = ebm.explain_global()
+    gd = glob.data()
+    names = list(ebm.feature_names_in_)
+    terms = sorted(((n, float(s)) for n, s in zip(gd["names"], gd["scores"])
+                    if " & " not in n and n not in ("topic", "format")), key=lambda kv: -kv[1])[:top]
+    kinds = [_shape_kind(np.asarray(glob.data(names.index(n))["scores"], float),
+                         np.asarray(glob.data(names.index(n))["names"], float)) for n, _ in terms]
+    glyph = {"up": "\u2191", "down": "\u2193", "peak": "\u2229"}
+    color = {"up": DARK_BLUE, "down": PINK, "peak": PURPLE}
+    terms, kinds = terms[::-1], kinds[::-1]
+    fig, ax = plt.subplots(figsize=(6.6, 4.6))
+    vals = [v for _, v in terms]
+    ax.barh(range(len(terms)), vals, color=[color[k] for k in kinds], height=0.7)
+    ax.set_yticks(range(len(terms)),
+                  [f"{glyph[k]}  {PRETTY_FEATURE.get(n, n.replace('_', ' '))}" for (n, _), k in zip(terms, kinds)])
+    for i, v in enumerate(vals):
+        ax.text(v + max(vals) * 0.01, i, f"{v:.4f}", va="center", fontsize=8.5)
+    ax.set_xlim(0, max(vals) * 1.18)
+    ax.set_xlabel(r"Mean $|\Delta y|$")
+    ax.set_title("Top EBM features by importance")
+    ax.grid(axis="y", visible=False)
+    handles = [Line2D([], [], color=color[k], lw=6, label=lab) for k, lab in
+               [("up", "\u2191 increasing"), ("down", "\u2193 decreasing"), ("peak", "\u2229 peaked")]]
+    ax.legend(handles=handles, frameon=False, loc="lower right")
+    plt.tight_layout()
+    _save(fig, "feature_importance.png")
+
+
+def fig_selection() -> None:
+    df = pd.read_csv(RESULTS / "validation_60m_2ep.csv")
+    pretty = {"ebm_within_topic_eq150M": "EBM within topics", "random_eq150M_seed42": "Random (seed 42)",
+              "random_eq150M_seed43": "Random (seed 43)", "random_eq150M_seed44": "Random (seed 44)",
+              "ebm_eq150M": "EBM, all features", "ebm_eq150M_seed43": "EBM, all features (seed 43)",
+              "ebm_interp_eq150M": "EBM, no PC", "lasso_eq150M": "Lasso", "fwedu_eq150M": "FineWeb-Edu",
+              "dclm_eq150M": "DCLM"}
+    df = df.sort_values("val_loss", ascending=False).reset_index(drop=True)
+    rand = float(df.loc[df["name"] == "random_eq150M_seed42", "val_loss"].iloc[0])
+    fig, ax = plt.subplots(figsize=(6.0, 4.0))
+    for i, r in df.iterrows():
+        n = r["name"]
+        c = PINK if n.startswith("ebm_within") else (GRAY if n.startswith("random") else DARK_BLUE)
+        ax.plot([rand, r["val_loss"]], [i, i], color=LIGHT_BLUE, lw=2, zorder=1)
+        ax.scatter(r["val_loss"], i, s=50, color=c, zorder=2)
+    ax.axvline(rand, color=GRAY, ls="--", lw=1)
+    ax.set_yticks(range(len(df)), [pretty.get(n, n) for n in df["name"]])
+    ax.set_xlabel("CommonCrawl val loss (lower is better)")
+    ax.set_title("Held-out selection, 60M LMs")
+    ax.grid(axis="y", visible=False)
+    plt.tight_layout()
+    _save(fig, "selection.png")
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--only", nargs="*",
-                    choices=["swarm", "target", "calibration", "shapes"],
-                    help="subset of figures to make (default: all)")
+    readme = ["correlations", "loadings", "diversity", "r2", "calibration", "shapes",
+              "importance", "selection"]
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--only", nargs="*", choices=readme + ["swarm", "target"],
+                    help="subset of figures to make (default: the README figures)")
+    ap.add_argument("--factor-dir", type=Path, default=DATA_DIR / "factor_model")
     args = ap.parse_args()
-    wanted = set(args.only or ["swarm", "target", "calibration", "shapes"])
+    wanted = set(args.only or readme)
     OUT.mkdir(parents=True, exist_ok=True)
 
-    runs = load_runs()
-    if "swarm" in wanted:
-        fig_swarm_val_loss(runs)
+    if "correlations" in wanted:
+        fig_filter_correlations()
+    if "loadings" in wanted:
+        fig_factor_loadings(args.factor_dir)
+    if "diversity" in wanted:
+        fig_quality_diversity(args.factor_dir)
+    if "r2" in wanted:
+        fig_r2()
+    if "selection" in wanted:
+        fig_selection()
+    if "importance" in wanted:
+        fig_feature_importance()
+    if "shapes" in wanted:
+        fig_ebm_shapes()
+    if wanted & {"swarm", "target"}:
+        runs = load_runs()
+        if "swarm" in wanted:
+            fig_swarm_val_loss(runs)
     if wanted & {"target", "calibration"}:
         df, y, in_pool = train_pool()
         if "target" in wanted:
-            fig_target_overview(df, y, runs)
+            fig_target_overview(df, y, load_runs())
         if "calibration" in wanted:
             fig_calibration(df, y, in_pool)
-    if "shapes" in wanted:
-        fig_ebm_shapes()
     print(f"wrote figures to {OUT}")
-
 
 if __name__ == "__main__":
     main()

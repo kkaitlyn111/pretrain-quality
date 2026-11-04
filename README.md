@@ -29,12 +29,43 @@ flowchart LR
 
 ## Results
 
+### Stage 1: existing filters as the target
+
+The filter scores split into a benchmark group (ARC-Easy, PIQA, SciQ) and a generative-quality
+group (DCLM, FineWeb-Edu, LAMBADA). The two-factor model's top-20% selection reaches a held-out
+quality of 0.680, against 0.405 for DCLM.
+
+<p align="center"><img src="figures/filter_correlations.png" width="55%"><br>
+Spearman correlation between the ten filter scores.</p>
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="figures/factor_loadings.png"><br>Loadings of the six modelled filter scores on the two factors.</td>
+<td align="center" width="50%"><img src="figures/quality_diversity.png"><br>Held-out quality vs. topic entropy of the top-20% selection as the within-topic floor varies.</td>
+</tr>
+</table>
+
+### Stage 2: a model swarm as the target
+
 | Predicting y (held-out documents) | Test R² ↑ |
 |---|---:|
 | Topic only | 0.076 |
 | Lasso | 0.408 |
 | EBM, no perplexity-correlation features | 0.656 |
 | EBM, all features | **0.668** |
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="figures/r2.png"><br>Test R² of four predictors of y.</td>
+<td align="center" width="50%"><img src="figures/calibration.png"><br>EBM prediction vs. measured y on held-out documents.</td>
+</tr>
+</table>
+
+<p align="center"><img src="figures/feature_importance.png" width="65%"><br>
+The twelve most important EBM features and the direction of their effect.</p>
+
+<p align="center"><img src="figures/ebm_shapes.png" width="90%"><br>
+EBM shape functions of the six most important features.</p>
 
 | Selection policy (60M LMs, 150M tokens) | CC val loss ↓ | ARC-Easy ↑ |
 |---|---:|---:|
@@ -43,10 +74,8 @@ flowchart LR
 | FineWeb-Edu | 3.967 | 0.365 |
 | DCLM | 4.006 | **0.379** |
 
-The two-factor model's top-20% selection reaches a held-out quality of 0.680, against 0.405
-for DCLM.
-
-![EBM shape functions](figures/ebm_shapes.png)
+<p align="center"><img src="figures/selection.png" width="60%"><br>
+CommonCrawl validation loss of 60M LMs trained on each selection; the dashed line is random.</p>
 
 ## Quickstart
 
