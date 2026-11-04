@@ -11,14 +11,20 @@ random selection. We investigate a host of features that are hypothesized to mat
 
 ```mermaid
 flowchart LR
-    A["Corpus-200B sample<br/>100 shards, 2.26M docs<br/>10 filter scores"] --> B["EDA<br/>global vs. within-topic<br/>filter correlations"]
-    A --> C["Two-factor latent model<br/>(EM) → selection policies"]
-    A --> D["593 swarm LMs<br/>15M params, 150M tokens each"]
-    D --> E["per-document target y<br/>difference in means"]
-    A --> F["~50 readable features / doc"]
-    E --> G["EBM: y ≈ Σ f(x) + Σ f(x, x')"]
-    F --> G
-    G --> H["select 150M tokens from 30 fresh shards<br/>→ 60M-param LMs, CC val, HellaSwag, ARC-E, LAMBADA"]
+    docs["2.26M web documents<br/>from Corpus-200B"]
+
+    subgraph s2["Stage 2: a model swarm as the target"]
+        direction LR
+        m1["Train 593 small LMs<br/>on random subsets"] --> m2["Score each document:<br/>val loss without it<br/>minus val loss with it"] --> m3["Predict that score from<br/>readable text features<br/>with an EBM"] --> m4["Select new data with the<br/>EBM and train 60M LMs"]
+    end
+
+    subgraph s1["Stage 1: existing filters as the target"]
+        direction LR
+        f1["Score every document<br/>with 10 quality filters"] --> f2["Fit a two-factor<br/>latent model with EM"] --> f3["Select the top 20%<br/>by the model's score"]
+    end
+
+    docs --> f1
+    docs --> m1
 ```
 
 ## Results
@@ -56,7 +62,7 @@ The full pipeline is described in [pipeline/README.md](pipeline/README.md).
 This work builds on WebOrganizer and Corpus-200B (Wettig et al., ICML 2025). Feature scores
 come from QuRater (Wettig et al., ICML 2024), perplexity-correlation filters (Thrush et al.,
 ICLR 2025), a textbook-quality fastText classifier, the OpenAI RoBERTa detector, and spaCy
-(see [NOTICE.md](NOTICE.md)). Models are fit with
+(see [sources.md](sources.md)). Models are fit with
 [InterpretML](https://github.com/interpretml/interpret), and the influence experiments use
 [kronfluence](https://github.com/pomonam/kronfluence). We thank Scott Linderman and the
 STATS305C class for guidance and feedback on this project!
