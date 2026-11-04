@@ -1,0 +1,25 @@
+[extract] 10,000 docs from data/sample/docs.parquet
+[extract] 34 CPU features in 12.8s (16 workers)
+[extract] model features: rest precomputed by the full pipeline
+[extract] check vs. full-pipeline values: 100.00% of doc x feature cells match (worst feature: char_count 100.00%)
+[extract] wrote runs/features.parquet  shape=(10000, 48)
+extract wall 23.80s
+[fit] 10,000 docs, 44 continuous + 2 categorical features (EBM-no-PC feature set)
+[fit] bundled full-data EBM-no-PC (trained on 1.65M docs), R^2 on these held-out docs: 0.662
+[fit] trained on 8,000, tested on 2,000 (stratified by topic)
+      topic-only  R^2 = 0.111
+      Lasso       R^2 = 0.418   (5s)
+      EBM-no-PC   R^2 = 0.645   (train 0.672, 31s)
+[fit] top 10 EBM terms by mean |contribution|:
+       1. qr_educational_value                       0.00420
+       2. textbook_quality                           0.00342
+       3. frac_alpha                                 0.00291
+       4. mean_word_length                           0.00284
+       5. first_person_fraction                      0.00265
+       6. flesch_reading_ease                        0.00247
+       7. qr_required_expertise                      0.00247
+       8. flesch_kincaid_grade                       0.00222
+       9. qr_facts_and_trivia                        0.00203
+      10. proper_noun_density                        0.00184
+[fit] wrote runs/fit_summary.json and runs/ebm_no_pc_sample.joblib
+fit wall 45.89s

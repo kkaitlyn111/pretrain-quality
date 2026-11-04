@@ -1,0 +1,54 @@
+{
+  "n_docs": 10000,
+  "n_continuous": 44,
+  "n_categorical": 2,
+  "full_data_ebm_r2_on_sample": 0.6615057997076406,
+  "n_train": 8000,
+  "n_test": 2000,
+  "topic_only_r2": 0.11076552334504497,
+  "lasso_r2": 0.418214491251245,
+  "ebm_r2": 0.6451140647613078,
+  "ebm_train_r2": 0.6724301833921207,
+  "ebm_top_features": [
+    {
+      "feature": "qr_educational_value",
+      "importance": 0.004200823167055784
+    },
+    {
+      "feature": "textbook_quality",
+      "importance": 0.003424454793253489
+    },
+    {
+      "feature": "frac_alpha",
+      "importance": 0.0029093199378446718
+    },
+    {
+      "feature": "mean_word_length",
+      "importance": 0.0028386369776403726
+    },
+    {
+      "feature": "first_person_fraction",
+      "importance": 0.002654680945309269
+    },
+    {
+      "feature": "flesch_reading_ease",
+      "importance": 0.0024723054454338853
+    },
+    {
+      "feature": "qr_required_expertise",
+      "importance": 0.002467446561378028
+    },
+    {
+      "feature": "flesch_kincaid_grade",
+      "importance": 0.0022205831110526106
+    },
+    {
+      "feature": "qr_facts_and_trivia",
+      "importance": 0.0020300922145300086
+    },
+    {
+      "feature": "proper_noun_density",
+      "importance": 0.0018387569618924405
+    }
+  ]
+}

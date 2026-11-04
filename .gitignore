@@ -1,0 +1,39 @@
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+build/
+dist/
+
+# local config / secrets
+config/cluster.env
+.env
+wandb/
+
+# outputs
+runs/
+logs/
+*.log
+*.out
+*.err
+data/*
+!data/sample/
+data/sample/*
+!data/sample/docs.parquet
+!data/sample/reference.parquet
+!data/sample/README.md
+
+# large model artefacts (models/ebm_no_pc.joblib is tracked explicitly)
+*.pt
+*.ckpt
+*.bin
+*.safetensors
+
+# misc
+.DS_Store
+.claude/
+.ipynb_checkpoints/
+figures/overview.html

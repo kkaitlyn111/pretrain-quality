@@ -1,0 +1,329 @@
+{
+  "cont_features": [
+    "char_count",
+    "word_count",
+    "mean_word_length",
+    "frac_alpha",
+    "frac_digit",
+    "frac_punctuation",
+    "frac_uppercase",
+    "frac_lines_terminal_punct",
+    "frac_lines_bullet",
+    "type_token_ratio",
+    "stopword_fraction",
+    "ngram_rep_2",
+    "ngram_rep_3",
+    "ngram_rep_4",
+    "num_lines",
+    "mean_line_length",
+    "discourse_causal",
+    "discourse_contrastive",
+    "discourse_elaborative",
+    "discourse_temporal",
+    "explanation_density",
+    "question_density",
+    "pronoun_density",
+    "first_person_fraction",
+    "hedge_density",
+    "hapax_legomena_ratio",
+    "header_density",
+    "code_fraction",
+    "avg_paragraph_length",
+    "list_density",
+    "numeric_density",
+    "proper_noun_density",
+    "flesch_kincaid_grade",
+    "flesch_reading_ease",
+    "entity_density",
+    "entity_diversity",
+    "entity_per_sentence",
+    "qr_writing_style",
+    "qr_required_expertise",
+    "qr_facts_and_trivia",
+    "qr_educational_value",
+    "pc_arc_easy",
+    "pc_piqa",
+    "pc_sciq",
+    "pc_lambada",
+    "textbook_quality",
+    "ai_generated",
+    "token_count"
+  ],
+  "cat_features": [
+    "topic",
+    "format"
+  ],
+  "n_train": 1650440,
+  "n_test": 412611,
+  "lasso_r2": 0.43571753700721594,
+  "lasso_top20": [
+    {
+      "feature": "cat__format_2",
+      "coef": -0.01540728294303264,
+      "abscoef": 0.01540728294303264
+    },
+    {
+      "feature": "num__type_token_ratio",
+      "coef": -0.01178698471003384,
+      "abscoef": 0.01178698471003384
+    },
+    {
+      "feature": "num__frac_alpha",
+      "coef": 0.007738859773414611,
+      "abscoef": 0.007738859773414611
+    },
+    {
+      "feature": "cat__format_8",
+      "coef": 0.007713446496867346,
+      "abscoef": 0.007713446496867346
+    },
+    {
+      "feature": "cat__format_10",
+      "coef": 0.007601588220319174,
+      "abscoef": 0.007601588220319174
+    },
+    {
+      "feature": "cat__topic_5",
+      "coef": 0.00710549361199161,
+      "abscoef": 0.00710549361199161
+    },
+    {
+      "feature": "num__word_count",
+      "coef": -0.006703502676321987,
+      "abscoef": 0.006703502676321987
+    },
+    {
+      "feature": "cat__topic_2",
+      "coef": 0.006602403605393,
+      "abscoef": 0.006602403605393
+    },
+    {
+      "feature": "cat__topic_7",
+      "coef": -0.006290945828111392,
+      "abscoef": 0.006290945828111392
+    },
+    {
+      "feature": "cat__topic_20",
+      "coef": 0.005855512871532474,
+      "abscoef": 0.005855512871532474
+    },
+    {
+      "feature": "cat__topic_23",
+      "coef": 0.005687292095955773,
+      "abscoef": 0.005687292095955773
+    },
+    {
+      "feature": "num__ngram_rep_2",
+      "coef": -0.005502765500183682,
+      "abscoef": 0.005502765500183682
+    },
+    {
+      "feature": "cat__format_17",
+      "coef": 0.005395397536159836,
+      "abscoef": 0.005395397536159836
+    },
+    {
+      "feature": "num__char_count",
+      "coef": 0.005340104037945641,
+      "abscoef": 0.005340104037945641
+    },
+    {
+      "feature": "cat__format_3",
+      "coef": 0.005338256394744454,
+      "abscoef": 0.005338256394744454
+    },
+    {
+      "feature": "cat__format_9",
+      "coef": 0.00520376970909494,
+      "abscoef": 0.00520376970909494
+    },
+    {
+      "feature": "cat__topic_17",
+      "coef": 0.0049062559107392505,
+      "abscoef": 0.0049062559107392505
+    },
+    {
+      "feature": "num__qr_facts_and_trivia",
+      "coef": 0.004805515274381827,
+      "abscoef": 0.004805515274381827
+    },
+    {
+      "feature": "num__flesch_reading_ease",
+      "coef": 0.004635020251016966,
+      "abscoef": 0.004635020251016966
+    },
+    {
+      "feature": "num__list_density",
+      "coef": -0.004527956889746862,
+      "abscoef": 0.004527956889746862
+    }
+  ],
+  "lasso_n_nonzero": 89,
+  "ebm_r2": 0.6680519872682922,
+  "ebm_top20": [
+    {
+      "feature": "qr_educational_value",
+      "importance": 0.005603263955224119
+    },
+    {
+      "feature": "proper_noun_density",
+      "importance": 0.003608834473437117
+    },
+    {
+      "feature": "textbook_quality",
+      "importance": 0.003475504250899891
+    },
+    {
+      "feature": "frac_alpha",
+      "importance": 0.003355280214964166
+    },
+    {
+      "feature": "mean_word_length",
+      "importance": 0.003200777149821031
+    },
+    {
+      "feature": "qr_required_expertise",
+      "importance": 0.0028683063899996204
+    },
+    {
+      "feature": "char_count",
+      "importance": 0.0027549092975713402
+    },
+    {
+      "feature": "first_person_fraction",
+      "importance": 0.002693372222918713
+    },
+    {
+      "feature": "token_count",
+      "importance": 0.0025940529487274797
+    },
+    {
+      "feature": "explanation_density",
+      "importance": 0.0024605192114211865
+    },
+    {
+      "feature": "mean_line_length",
+      "importance": 0.0024051933844555767
+    },
+    {
+      "feature": "ngram_rep_3",
+      "importance": 0.0023342047544038626
+    },
+    {
+      "feature": "pc_lambada",
+      "importance": 0.0023310186191135207
+    },
+    {
+      "feature": "pc_sciq",
+      "importance": 0.002317913151634245
+    },
+    {
+      "feature": "flesch_kincaid_grade",
+      "importance": 0.0023072907190881844
+    },
+    {
+      "feature": "flesch_reading_ease",
+      "importance": 0.0022028161831851925
+    },
+    {
+      "feature": "qr_facts_and_trivia",
+      "importance": 0.00204072460699848
+    },
+    {
+      "feature": "ai_generated",
+      "importance": 0.0018772235884866465
+    },
+    {
+      "feature": "frac_digit",
+      "importance": 0.0018563975838632918
+    },
+    {
+      "feature": "question_density",
+      "importance": 0.001832773992036683
+    }
+  ],
+  "ebm_interp_r2": 0.6556975389280049,
+  "ebm_interp_top20": [
+    {
+      "feature": "qr_educational_value",
+      "importance": 0.005911937257938579
+    },
+    {
+      "feature": "textbook_quality",
+      "importance": 0.0035767155262391897
+    },
+    {
+      "feature": "proper_noun_density",
+      "importance": 0.003405505239870873
+    },
+    {
+      "feature": "mean_word_length",
+      "importance": 0.003288425069409065
+    },
+    {
+      "feature": "frac_alpha",
+      "importance": 0.0031762213578658822
+    },
+    {
+      "feature": "first_person_fraction",
+      "importance": 0.0029463899577158565
+    },
+    {
+      "feature": "qr_required_expertise",
+      "importance": 0.0027594247287636062
+    },
+    {
+      "feature": "flesch_reading_ease",
+      "importance": 0.002488639135920016
+    },
+    {
+      "feature": "flesch_kincaid_grade",
+      "importance": 0.0023747273079454383
+    },
+    {
+      "feature": "mean_line_length",
+      "importance": 0.002259488642642354
+    },
+    {
+      "feature": "explanation_density",
+      "importance": 0.0021835235082361053
+    },
+    {
+      "feature": "qr_facts_and_trivia",
+      "importance": 0.0019959382665174167
+    },
+    {
+      "feature": "ngram_rep_3",
+      "importance": 0.0018247143980519615
+    },
+    {
+      "feature": "ai_generated",
+      "importance": 0.0017677930674389122
+    },
+    {
+      "feature": "numeric_density",
+      "importance": 0.001744522087073434
+    },
+    {
+      "feature": "question_density",
+      "importance": 0.001716860580107714
+    },
+    {
+      "feature": "frac_digit",
+      "importance": 0.0016726942028795918
+    },
+    {
+      "feature": "entity_per_sentence",
+      "importance": 0.0016303654558930904
+    },
+    {
+      "feature": "frac_uppercase",
+      "importance": 0.0015851515116653589
+    },
+    {
+      "feature": "discourse_contrastive",
+      "importance": 0.0015292125533351779
+    }
+  ],
+  "ebm_interp_nominal": true
+}
