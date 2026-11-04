@@ -1,50 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="372" viewBox="0 0 1400 372">
 <defs><marker id="mg" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0.5 L8,4.5 L0,8.5 z" fill="#86ad74"/></marker><marker id="mm" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0.5 L8,4.5 L0,8.5 z" fill="#b8687f"/></marker><marker id="mn" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0,0.5 L8,4.5 L0,8.5 z" fill="#8a93a3"/></marker></defs>
 <rect width="1400" height="372" fill="white"/>
-<text x="250" y="44" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#3f6b2f">Filters</text>
-<text x="345" y="44" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14.5" fill="#5d8a4c">what do existing quality filters measure?</text>
-<text x="250" y="218" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#7d3049">Swarm</text>
-<text x="345" y="218" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14.5" fill="#a24d67">which documents actually lower validation loss?</text>
-<rect x="28" y="143.0" width="172" height="96" rx="10" fill="#f3f4f7" stroke="#a7afbd" stroke-width="1.6"/>
-<text x="114.0" y="176.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#2b3442" text-anchor="middle">web documents</text>
-<text x="114.0" y="200.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">2.26M from</text>
-<text x="114.0" y="220.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">Corpus-200B</text>
-<path d="M200,177.0 L222,177.0 L222,104.0 L246,104.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
-<path d="M200,205.0 L222,205.0 L222,278.0 L246,278.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
-<rect x="250" y="66" width="210" height="76" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
-<text x="355.0" y="89.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">10 filter scores</text>
-<text x="355.0" y="113.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">DCLM, FineWeb-Edu,</text>
-<text x="355.0" y="133.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">QuRater, PC</text>
-<path d="M460,104.0 L528,104.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
-<rect x="532" y="66" width="230" height="76" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
-<text x="647.0" y="98.9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">two-factor latent model</text>
-<text x="647.0" y="123.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">fit by EM</text>
-<path d="M762,104.0 L830,104.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
-<rect x="834" y="66" width="230" height="76" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
-<text x="949.0" y="89.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">two filter axes</text>
-<text x="949.0" y="113.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">benchmark vs.</text>
-<text x="949.0" y="133.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">generative quality</text>
-<text x="949" y="166" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#5d8a4c" text-anchor="middle">top-20% quality 0.680 vs. 0.405 for DCLM</text>
-<rect x="250" y="240" width="210" height="76" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
-<text x="355.0" y="263.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">593 small LMs</text>
-<text x="355.0" y="287.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">random subsets,</text>
-<text x="355.0" y="307.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">150M tokens each</text>
-<path d="M460,278.0 L528,278.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
-<text x="494" y="268.0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12.5" font-style="italic" fill="#a24d67" text-anchor="middle">val losses</text>
-<rect x="532" y="240" width="230" height="76" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
-<text x="647.0" y="272.9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">per-document target y</text>
-<text x="647.0" y="297.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">difference in means</text>
-<path d="M762,278.0 L830,278.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
-<rect x="834" y="240" width="230" height="76" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
-<text x="949.0" y="272.9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">interpretable EBM</text>
-<text x="949.0" y="297.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">~50 readable features</text>
-<text x="949" y="340" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#a24d67" text-anchor="middle">test R² 0.656 (Lasso 0.408, topic only 0.076)</text>
-<rect x="1150" y="133.0" width="222" height="116" rx="10" fill="#f3f4f7" stroke="#a7afbd" stroke-width="1.6"/>
-<text x="1261.0" y="176.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#2b3442" text-anchor="middle">data selection</text>
-<text x="1261.0" y="200.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">60M LMs on</text>
-<text x="1261.0" y="220.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">150M-token selections</text>
-<path d="M1064,104.0 L1100,104.0 L1100,175.0 L1146,175.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
-<path d="M1064,278.0 L1100,278.0 L1100,207.0 L1146,207.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
-<text x="1261" y="275.0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#5b6575" text-anchor="middle">within-topic EBM beats random</text>
-<text x="1261" y="293.0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#5b6575" text-anchor="middle">on CommonCrawl val loss</text>
+<text x="250" y="44" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2" fill="#5d8a4c">STAGE 1</text>
+<text x="322" y="44" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#3f6b2f">Filters as the target</text>
+<text x="536" y="44" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14.5" fill="#5d8a4c">why do successful filters rate documents highly?</text>
+<text x="250" y="222" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2" fill="#a24d67">STAGE 2</text>
+<text x="322" y="222" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#7d3049">A model swarm as the target</text>
+<text x="628" y="222" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14.5" fill="#a24d67">which documents actually lower validation loss?</text>
+<rect x="28" y="147.0" width="172" height="96" rx="10" fill="#f3f4f7" stroke="#a7afbd" stroke-width="1.6"/>
+<text x="114.0" y="180.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#2b3442" text-anchor="middle">web documents</text>
+<text x="114.0" y="204.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">2.26M from</text>
+<text x="114.0" y="224.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5b6575" text-anchor="middle">Corpus-200B</text>
+<path d="M200,181.0 L222,181.0 L222,106.0 L246,106.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
+<path d="M200,209.0 L222,209.0 L222,284.0 L246,284.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
+<rect x="250" y="66" width="236" height="80" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
+<text x="368.0" y="91.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">10 filter scores</text>
+<text x="368.0" y="115.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">DCLM, FineWeb-Edu,</text>
+<text x="368.0" y="135.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">QuRater, PC</text>
+<path d="M486,106.0 L542,106.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
+<rect x="546" y="66" width="236" height="80" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
+<text x="664.0" y="91.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">two-factor latent model</text>
+<text x="664.0" y="115.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">fit by EM, with text</text>
+<text x="664.0" y="135.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">features as covariates</text>
+<path d="M782,106.0 L838,106.0" fill="none" stroke="#86ad74" stroke-width="1.8" marker-end="url(#mg)"/>
+<rect x="842" y="66" width="236" height="80" rx="10" fill="#eaf2e6" stroke="#86ad74" stroke-width="1.6"/>
+<text x="960.0" y="91.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#3f6b2f" text-anchor="middle">two filter axes</text>
+<text x="960.0" y="115.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">benchmark vs.</text>
+<text x="960.0" y="135.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#5d8a4c" text-anchor="middle">generative quality</text>
+<text x="960.0" y="170" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#5d8a4c" text-anchor="middle">top-20% quality 0.680 vs. 0.405 for DCLM</text>
+<rect x="250" y="244" width="236" height="80" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
+<text x="368.0" y="269.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">593 small LMs</text>
+<text x="368.0" y="293.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">random subsets,</text>
+<text x="368.0" y="313.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">150M tokens each</text>
+<path d="M486,284.0 L542,284.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
+<text x="516.0" y="274.0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12.5" font-style="italic" fill="#a24d67" text-anchor="middle">val losses</text>
+<rect x="546" y="244" width="236" height="80" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
+<text x="664.0" y="278.9" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">target y per document</text>
+<text x="664.0" y="303.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">difference in means</text>
+<path d="M782,284.0 L838,284.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
+<rect x="842" y="244" width="236" height="80" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
+<text x="960.0" y="269.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">interpretable EBM</text>
+<text x="960.0" y="293.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">recreates y from</text>
+<text x="960.0" y="313.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">readable features</text>
+<text x="960.0" y="348" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#a24d67" text-anchor="middle">test R² 0.656 (Lasso 0.408, topic 0.076)</text>
+<path d="M1078,284.0 L1134,284.0" fill="none" stroke="#b8687f" stroke-width="1.8" marker-end="url(#mm)"/>
+<rect x="1138" y="244" width="236" height="80" rx="10" fill="#f6e6ec" stroke="#b8687f" stroke-width="1.6"/>
+<text x="1256.0" y="269.1" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#7d3049" text-anchor="middle">held-out data selection</text>
+<text x="1256.0" y="293.8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">60M LMs on 150M tokens</text>
+<text x="1256.0" y="313.3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#a24d67" text-anchor="middle">from 30 fresh shards</text>
+<text x="1256.0" y="348" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-style="italic" fill="#a24d67" text-anchor="middle">within-topic EBM beats random</text>
 </svg>

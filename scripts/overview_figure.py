@@ -30,41 +30,37 @@ def arrow(pts,k,dash=False):
 def note(x,y,t,st,anchor="middle",size=13.5):
     a(f'<text x="{x}" y="{y}" {F} font-size="{size}" font-style="italic" fill="{st["sub"]}" text-anchor="{anchor}">{t}</text>')
 
-yA,yB,bh=66,240,76          # lane box tops, box height
+yA,yB,bh=66,244,80          # lane box tops, box height
 cA,cB=yA+bh/2,yB+bh/2
-# lane labels
-a(f'<text x="250" y="{yA-22}" {F} font-size="22" font-weight="700" fill="{G["title"]}">Filters</text>')
-a(f'<text x="345" y="{yA-22}" {F} font-size="14.5" fill="{G["sub"]}">what do existing quality filters measure?</text>')
-a(f'<text x="250" y="{yB-22}" {F} font-size="22" font-weight="700" fill="{M["title"]}">Swarm</text>')
-a(f'<text x="345" y="{yB-22}" {F} font-size="14.5" fill="{M["sub"]}">which documents actually lower validation loss?</text>')
-# source
+X=[250,546,842,1138]; BW=236
+def lane_label(y,num,title,sub,st,sub_x):
+    a(f'<text x="250" y="{y-22}" {F} font-size="13" font-weight="700" letter-spacing="1.2" fill="{st["sub"]}">STAGE {num}</text>')
+    a(f'<text x="322" y="{y-22}" {F} font-size="20" font-weight="700" fill="{st["title"]}">{title}</text>')
+    a(f'<text x="{sub_x}" y="{y-22}" {F} font-size="14.5" fill="{st["sub"]}">{sub}</text>')
+lane_label(yA,1,"Filters as the target","why do successful filters rate documents highly?",G,536)
+lane_label(yB,2,"A model swarm as the target","which documents actually lower validation loss?",M,628)
 box(28,(cA+cB)/2-48,172,96,N,"web documents","2.26M from","Corpus-200B")
 sx=200; sy=(cA+cB)/2
 arrow([(sx,sy-14),(222,sy-14),(222,cA),(246,cA)],"g")
 arrow([(sx,sy+14),(222,sy+14),(222,cB),(246,cB)],"m")
-# lane A
-box(250,yA,210,bh,G,"10 filter scores","DCLM, FineWeb-Edu,","QuRater, PC")
-arrow([(460,cA),(528,cA)],"g")
-box(532,yA,230,bh,G,"two-factor latent model","fit by EM")
-arrow([(762,cA),(830,cA)],"g")
-box(834,yA,230,bh,G,"two filter axes","benchmark vs.","generative quality")
-note(949,yA+bh+24,"top-20% quality 0.680 vs. 0.405 for DCLM",G)
-
-# lane B
-box(250,yB,210,bh,M,"593 small LMs","random subsets,","150M tokens each")
-arrow([(460,cB),(528,cB)],"m")
-note(494,cB-10,"val losses",M,size=12.5)
-box(532,yB,230,bh,M,"per-document target y","difference in means")
-arrow([(762,cB),(830,cB)],"m")
-box(834,yB,230,bh,M,"interpretable EBM","~50 readable features")
-note(949,yB+bh+24,"test R² 0.656 (Lasso 0.408, topic only 0.076)",M)
-# sink
-box(1150,(cA+cB)/2-58,222,116,N,"data selection","60M LMs on","150M-token selections")
-tx=1150; ty=(cA+cB)/2
-arrow([(1064,cA),(1100,cA),(1100,ty-16),(1146,ty-16)],"g")
-arrow([(1064,cB),(1100,cB),(1100,ty+16),(1146,ty+16)],"m")
-note(1261,ty+84,"within-topic EBM beats random",N)
-note(1261,ty+102,"on CommonCrawl val loss",N)
+# stage 1
+box(X[0],yA,BW,bh,G,"10 filter scores","DCLM, FineWeb-Edu,","QuRater, PC")
+arrow([(X[0]+BW,cA),(X[1]-4,cA)],"g")
+box(X[1],yA,BW,bh,G,"two-factor latent model","fit by EM, with text","features as covariates")
+arrow([(X[1]+BW,cA),(X[2]-4,cA)],"g")
+box(X[2],yA,BW,bh,G,"two filter axes","benchmark vs.","generative quality")
+note(X[2]+BW/2,yA+bh+24,"top-20% quality 0.680 vs. 0.405 for DCLM",G)
+# stage 2
+box(X[0],yB,BW,bh,M,"593 small LMs","random subsets,","150M tokens each")
+arrow([(X[0]+BW,cB),(X[1]-4,cB)],"m")
+note((X[0]+BW+X[1])/2,cB-10,"val losses",M,size=12.5)
+box(X[1],yB,BW,bh,M,"target y per document","difference in means")
+arrow([(X[1]+BW,cB),(X[2]-4,cB)],"m")
+box(X[2],yB,BW,bh,M,"interpretable EBM","recreates y from","readable features")
+note(X[2]+BW/2,yB+bh+24,"test R\u00b2 0.656 (Lasso 0.408, topic 0.076)",M)
+arrow([(X[2]+BW,cB),(X[3]-4,cB)],"m")
+box(X[3],yB,BW,bh,M,"held-out data selection","60M LMs on 150M tokens","from 30 fresh shards")
+note(X[3]+BW/2,yB+bh+24,"within-topic EBM beats random",M)
 a('</svg>')
 s="\n".join(o)
 open(OUT / "overview.svg","w").write(s)
